@@ -6,10 +6,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBarController: MenuBarController?
 
     func applicationWillFinishLaunching(_: Notification) {
-        guard !runtime.configuration.isUITesting else {
-            return
-        }
-
         NSApp.setActivationPolicy(.accessory)
     }
 
