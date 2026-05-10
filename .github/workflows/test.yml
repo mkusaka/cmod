@@ -12,51 +12,8 @@ concurrency:
 permissions: {}
 
 jobs:
-  changes:
-    name: Detect Changes
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      test: ${{ steps.tag.outputs.test || steps.filter.outputs.test || 'false' }}
-    steps:
-      - name: Enable tests for release builds
-        id: tag
-        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
-        run: echo "test=true" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        if: github.event_name != 'workflow_call'
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Detect files changed from main
-        id: filter
-        if: github.event_name != 'workflow_call'
-        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
-        with:
-          base: main
-          filters: |
-            test:
-              - 'Cmod/**'
-              - 'Cmod.xcodeproj/**'
-              - 'CmodTests/**'
-              - 'Config/**'
-              - 'Dependencies/**'
-              - 'scripts/**'
-              - 'mise.toml'
-              - 'lefthook.yml'
-              - 'renovate.json5'
-              - '.swiftformat'
-              - '.swiftlint.yml'
-              - '.github/workflows/test.yml'
-              - '.github/workflows/release.yml'
-
   lint:
     name: Lint
-    needs: changes
-    if: needs.changes.outputs.test == 'true'
     runs-on: macos-15
     permissions:
       contents: read
@@ -89,8 +46,6 @@ jobs:
 
   unit-test:
     name: Unit Tests
-    needs: changes
-    if: needs.changes.outputs.test == 'true'
     runs-on: macos-15
     permissions:
       contents: read
