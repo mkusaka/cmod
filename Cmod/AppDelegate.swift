@@ -16,14 +16,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_: Notification) {
         menuBarController = MenuBarController(runtime: runtime)
         runtime.start()
-
-        guard !runtime.configuration.isUITesting else {
-            return
-        }
-
-        DispatchQueue.main.async {
-            NSApp.windows.forEach { $0.close() }
-        }
     }
 
     func applicationWillTerminate(_: Notification) {
