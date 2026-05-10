@@ -16,15 +16,15 @@ struct CommandEventSample: Equatable {
     let kind: CommandEventKind
     let keyCode: CGKeyCode?
 
-    static func flagsChanged(_ keyCode: CGKeyCode) -> CommandEventSample {
-        CommandEventSample(kind: .flagsChanged, keyCode: keyCode)
+    nonisolated static func flagsChanged(_ keyCode: CGKeyCode) -> Self {
+        Self(kind: .flagsChanged, keyCode: keyCode)
     }
 
-    static func keyDown(_ keyCode: CGKeyCode) -> CommandEventSample {
-        CommandEventSample(kind: .keyDown, keyCode: keyCode)
+    nonisolated static func keyDown(_ keyCode: CGKeyCode) -> Self {
+        Self(kind: .keyDown, keyCode: keyCode)
     }
 
-    static let otherInput = CommandEventSample(kind: .otherInput, keyCode: nil)
+    nonisolated static let otherInput = Self(kind: .otherInput, keyCode: nil)
 }
 
 enum InputModeAction: Equatable {

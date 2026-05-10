@@ -7,12 +7,11 @@ protocol InputSwitching {
 
 struct JISInputSwitcher: InputSwitching {
     func switchInput(for action: InputModeAction) {
-        let keyCode: CGKeyCode
-        switch action {
+        let keyCode = switch action {
         case .switchToEnglish:
-            keyCode = CGKeyCode(kVK_JIS_Eisu)
+            CGKeyCode(kVK_JIS_Eisu)
         case .switchToKana:
-            keyCode = CGKeyCode(kVK_JIS_Kana)
+            CGKeyCode(kVK_JIS_Kana)
         }
 
         post(keyCode: keyCode, keyDown: true)

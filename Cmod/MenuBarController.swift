@@ -38,6 +38,22 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         menu.addItem(aboutItem)
         menu.addItem(.separator())
 
+        let settingsItem = NSMenuItem(
+            title: "Settings...",
+            action: #selector(showSettings),
+            keyEquivalent: ","
+        )
+        settingsItem.target = self
+        menu.addItem(settingsItem)
+
+        let debugWindowItem = NSMenuItem(
+            title: "Show Diagnostics Window",
+            action: #selector(showDebugWindow),
+            keyEquivalent: ""
+        )
+        debugWindowItem.target = self
+        menu.addItem(debugWindowItem)
+
         let refreshItem = NSMenuItem(
             title: "Refresh Permission Status",
             action: #selector(refreshPermissionStatus),
@@ -52,6 +68,16 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         menu.addItem(monitoringItem)
         menu.addItem(accessibilityItem)
         menu.addItem(lastActionItem)
+        menu.addItem(.separator())
+
+        let checkForUpdatesItem = NSMenuItem(
+            title: "Check for Updates...",
+            action: #selector(AppUpdaterController.checkForUpdates(_:)),
+            keyEquivalent: ""
+        )
+        checkForUpdatesItem.target = runtime.appUpdater
+        menu.addItem(checkForUpdatesItem)
+
         menu.addItem(.separator())
 
         let quitItem = NSMenuItem(title: "Quit Cmod", action: #selector(quit), keyEquivalent: "q")
@@ -76,6 +102,16 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     private func refreshPermissionStatus() {
         runtime.refreshPermissionStatus(prompt: true)
         refreshMenuState()
+    }
+
+    @objc
+    private func showSettings() {
+        runtime.showSettings()
+    }
+
+    @objc
+    private func showDebugWindow() {
+        runtime.showDebugWindow()
     }
 
     @objc

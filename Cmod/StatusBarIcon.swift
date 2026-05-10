@@ -10,6 +10,7 @@ enum StatusBarIcon {
 
         NSColor.clear.setFill()
         NSRect(origin: .zero, size: size).fill()
+        let kanaText = UnicodeScalar(0x3042).map { String($0) } ?? "K"
 
         drawKey(
             rect: NSRect(x: 1.5, y: 7.0, width: 10.5, height: 9.0),
@@ -18,7 +19,7 @@ enum StatusBarIcon {
         )
         drawKey(
             rect: NSRect(x: 8.0, y: 2.0, width: 10.5, height: 9.0),
-            text: String(UnicodeScalar(0x3042)!),
+            text: kanaText,
             fontSize: 7.0
         )
 

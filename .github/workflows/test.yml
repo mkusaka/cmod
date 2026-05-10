@@ -12,8 +12,77 @@ concurrency:
 permissions: {}
 
 jobs:
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      test: ${{ steps.default.outputs.test || steps.filter.outputs.test || 'false' }}
+    steps:
+      - name: Enable tests for reusable workflow calls
+        id: default
+        if: github.event_name == 'workflow_call'
+        run: echo "test=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        if: github.event_name != 'workflow_call'
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect files changed from main
+        id: filter
+        if: github.event_name != 'workflow_call'
+        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
+        with:
+          base: main
+          filters: |
+            test:
+              - 'Cmod/**'
+              - 'Cmod.xcodeproj/**'
+              - 'CmodTests/**'
+              - 'Config/**'
+              - 'Dependencies/**'
+              - 'scripts/**'
+              - 'mise.toml'
+              - 'lefthook.yml'
+              - 'renovate.json5'
+              - '.swiftformat'
+              - '.swiftlint.yml'
+              - '.github/workflows/test.yml'
+              - '.github/workflows/release.yml'
+
+  lint:
+    name: Lint
+    needs: changes
+    if: needs.changes.outputs.test == 'true'
+    runs-on: macos-15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+        with:
+          version: 2026.3.9
+          cache: true
+
+      - name: SwiftFormat check
+        run: mise exec -- swiftformat --lint .
+
+      - name: SwiftLint check
+        run: mise exec -- swiftlint lint --quiet
+
+      - name: GitHub Actions lint
+        run: mise exec -- actionlint
+
   unit-test:
     name: Unit Tests
+    needs: changes
+    if: needs.changes.outputs.test == 'true'
     runs-on: macos-15
     permissions:
       contents: read
@@ -28,4 +97,6 @@ jobs:
             -scheme Cmod \
             -destination 'platform=macOS' \
             -only-testing:CmodTests \
-            test
+            test \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO

@@ -14,14 +14,20 @@ final class CmodRuntime {
 
     let configuration: CmodConfiguration
     let state: CmodState
+    let appUpdater: AppUpdaterController
 
     private let permissionService: PermissionService
     private let eventTap: GlobalCommandKeyEventTap?
+    private let debugWindowController: DebugWindowController
+    private let settingsWindowController: SettingsWindowController
 
     private init(configuration: CmodConfiguration = CmodConfiguration()) {
         self.configuration = configuration
         state = CmodState()
+        appUpdater = AppUpdaterController()
         permissionService = PermissionService()
+        debugWindowController = DebugWindowController()
+        settingsWindowController = SettingsWindowController()
 
         if configuration.isUITesting {
             eventTap = nil
@@ -40,6 +46,7 @@ final class CmodRuntime {
 
     func start() {
         refreshPermissionStatus(prompt: !configuration.isUITesting)
+        appUpdater.start()
 
         guard let eventTap else {
             state.setMonitoringActive(false, message: "UI testing mode")
@@ -62,5 +69,13 @@ final class CmodRuntime {
     func refreshPermissionStatus(prompt: Bool) {
         let status = permissionService.currentStatus(prompt: prompt)
         state.setAccessibilityStatus(status)
+    }
+
+    func showSettings() {
+        settingsWindowController.show(runtime: self)
+    }
+
+    func showDebugWindow() {
+        debugWindowController.show(state: state)
     }
 }

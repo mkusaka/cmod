@@ -8,8 +8,8 @@ It watches left and right Command key taps globally:
 - Right Command tap: switch to Kana input
 - Command shortcuts, mouse clicks, and overlapping Command keys are ignored
 
-The app intentionally keeps the first slice small: no settings window, no login
-item, and no per-key customization yet.
+The app intentionally keeps the first slice small: no login item and no per-key
+customization yet. Settings and diagnostics are available from the menu bar.
 
 ## Install
 
@@ -46,6 +46,7 @@ Cmod uses native macOS APIs directly:
 - `CoreGraphics`: listen-only event tap for global keyboard/mouse events
 - `ApplicationServices`: Accessibility trust prompt/status
 - `Carbon.HIToolbox`: JIS virtual key codes for Eisu and Kana
+- `Sparkle`: in-app update checks against a signed appcast feed
 
 Runtime shape:
 
@@ -53,6 +54,9 @@ Runtime shape:
 CmodApp
 ├─ AppDelegate
 ├─ MenuBarController
+├─ SettingsWindowController
+├─ DebugWindowController
+├─ AppUpdaterController
 ├─ CmodRuntime
 ├─ PermissionService
 ├─ GlobalCommandKeyEventTap
@@ -81,6 +85,23 @@ open -n "$(xcodebuild -project Cmod.xcodeproj -scheme Cmod -configuration Debug 
 xcodebuild -project Cmod.xcodeproj -scheme Cmod -destination 'platform=macOS' test
 ```
 
+## Lint and Format
+
+Tool versions are managed by `mise.toml`.
+
+```bash
+mise install
+mise exec -- swiftformat .
+mise exec -- swiftlint lint --quiet
+mise exec -- actionlint
+```
+
+Install the optional pre-commit hooks:
+
+```bash
+mise exec -- lefthook install
+```
+
 ## Icon
 
 The app icon is generated from a checked-in Swift script:
@@ -104,17 +125,20 @@ Required GitHub repository secrets:
 - `APPLE_APP_STORE_CONNECT_KEY_ID`: App Store Connect API key ID
 - `APPLE_APP_STORE_CONNECT_ISSUER_ID`: App Store Connect issuer ID
 - `HOMEBREW_TAP_TOKEN`: GitHub token with permission to dispatch updates to `mkusaka/homebrew-tap`
+- `SPARKLE_ED_PRIVATE_KEY`: Sparkle EdDSA private key used to sign release ZIPs for appcast delivery
 
 The release workflow:
 
-- Runs unit tests first
+- Runs lint and unit tests first
 - Archives and exports a `Developer ID` signed app
 - Notarizes and staples the app
 - Uploads `Cmod.zip` to GitHub Releases for tag pushes
 - Dispatches a cask update to `mkusaka/homebrew-tap`
+- Signs the release ZIP with Sparkle EdDSA and deploys `appcast.xml` to the `gh-pages` branch
 
 Manual validation runs are supported through `workflow_dispatch`. They require
-signing secrets but skip GitHub Release creation and Homebrew tap updates.
+signing secrets but skip GitHub Release creation, Homebrew tap updates, and
+Sparkle appcast publishing.
 
 ### How To Cut A Release
 
@@ -140,15 +164,27 @@ gh run watch
 gh release view "v${VERSION}"
 brew update
 brew info --cask mkusaka/tap/cmod
+curl -fsSL https://mkusaka.github.io/cmod/appcast.xml | rg "<sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>"
 ```
 
 Expected results:
 
 - a signed and notarized `Cmod.zip` attached to the GitHub Release
 - a cask update dispatch to `mkusaka/homebrew-tap`
+- an appcast entry on GitHub Pages for Sparkle updates
 
 The workflow derives the release version from the tag name, so repository files
 do not need a manual version bump just for release publication.
+
+Sparkle compares updates using `CFBundleVersion` / `sparkle:version`, not the
+human-readable `CFBundleShortVersionString`. The workflow derives the numeric
+build version from tags such as `0.0.1` so app updates remain monotonic.
+
+For Sparkle to work in production, GitHub Pages must be enabled for this
+repository and configured to serve from the `gh-pages` branch. `SUPublicEDKey`
+is currently set in `Config/Cmod-Info.plist` to match the Tabora-style
+`SPARKLE_ED_PRIVATE_KEY` secret. If Cmod gets its own Sparkle key later, update
+both values together.
 
 ### How To Run A Validation Build
 

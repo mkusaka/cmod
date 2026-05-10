@@ -14,7 +14,10 @@ struct ContentView: View {
                     .accessibilityIdentifier("appTitle")
             }
 
-            Label(state.statusSummary, systemImage: state.monitoringActive ? "checkmark.circle" : "exclamationmark.triangle")
+            Label(
+                state.statusSummary,
+                systemImage: state.monitoringActive ? "checkmark.circle" : "exclamationmark.triangle"
+            )
             Label("Accessibility: \(state.accessibilityStatus.menuLabel)", systemImage: "lock.shield")
 
             if let lastAction = state.lastAction {

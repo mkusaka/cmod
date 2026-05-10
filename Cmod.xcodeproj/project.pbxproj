@@ -16,6 +16,10 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXBuildFile section */
+		C0D000012FB1000100000003 /* CmodSparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C0D000012FB1000100000002 /* CmodSparkle */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		09B85EF92FB0D3BC00DC1046 /* Cmod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cmod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B85F062FB0D3BD00DC1046 /* CmodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CmodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -32,6 +36,11 @@
 			path = CmodTests;
 			sourceTree = "<group>";
 		};
+		C0D000012FB1000100000004 /* Dependencies */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D000012FB1000100000003 /* CmodSparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +67,7 @@
 			children = (
 				09B85EFB2FB0D3BC00DC1046 /* Cmod */,
 				09B85F092FB0D3BD00DC1046 /* CmodTests */,
+				C0D000012FB1000100000004 /* Dependencies */,
 				09B85EFA2FB0D3BC00DC1046 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +101,7 @@
 			);
 			name = Cmod;
 			packageProductDependencies = (
+				C0D000012FB1000100000002 /* CmodSparkle */,
 			);
 			productName = Cmod;
 			productReference = 09B85EF92FB0D3BC00DC1046 /* Cmod.app */;
@@ -146,6 +158,9 @@
 			);
 			mainGroup = 09B85EF02FB0D3BC00DC1046;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C0D000012FB1000100000001 /* XCLocalSwiftPackageReference "Dependencies/CmodSparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 09B85EFA2FB0D3BC00DC1046 /* Products */;
 			projectDirPath = "";
@@ -254,7 +269,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -312,7 +327,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -333,7 +348,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = "";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/Cmod-Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -365,7 +381,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = "";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/Cmod-Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -392,7 +409,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 857365MUEG;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkusaka.CmodTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -413,7 +430,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 857365MUEG;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkusaka.CmodTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -457,6 +474,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		C0D000012FB1000100000001 /* XCLocalSwiftPackageReference "Dependencies/CmodSparkle" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Dependencies/CmodSparkle;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0D000012FB1000100000002 /* CmodSparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CmodSparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 09B85EF12FB0D3BC00DC1046 /* Project object */;
 }
