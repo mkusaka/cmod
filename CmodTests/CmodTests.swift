@@ -9,21 +9,21 @@
 import Testing
 
 struct CmodTests {
-    @Test @MainActor func `left command tap switches to english`() {
+    @Test @MainActor func leftCommandTapSwitchesToEnglish() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
         #expect(detector.handle(.flagsChanged(55)) == .switchToEnglish)
     }
 
-    @Test @MainActor func `right command tap switches to kana`() {
+    @Test @MainActor func rightCommandTapSwitchesToKana() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(54)) == nil)
         #expect(detector.handle(.flagsChanged(54)) == .switchToKana)
     }
 
-    @Test @MainActor func `command shortcut does not switch input`() {
+    @Test @MainActor func commandShortcutDoesNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
@@ -31,7 +31,7 @@ struct CmodTests {
         #expect(detector.handle(.flagsChanged(55)) == nil)
     }
 
-    @Test @MainActor func `command click does not switch input`() {
+    @Test @MainActor func commandClickDoesNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
@@ -39,7 +39,7 @@ struct CmodTests {
         #expect(detector.handle(.flagsChanged(55)) == nil)
     }
 
-    @Test @MainActor func `overlapping command keys do not switch input`() {
+    @Test @MainActor func overlappingCommandKeysDoNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
@@ -48,7 +48,7 @@ struct CmodTests {
         #expect(detector.handle(.flagsChanged(54)) == nil)
     }
 
-    @Test func `release version build version matches workflow scheme`() {
+    @Test func releaseVersionBuildVersionMatchesWorkflowScheme() {
         #expect(ReleaseVersion.buildVersion(for: "0.0.1") == 1)
         #expect(ReleaseVersion.buildVersion(for: "0.1.2") == 102)
         #expect(ReleaseVersion.buildVersion(for: "1.2.3") == 10203)
@@ -56,7 +56,7 @@ struct CmodTests {
         #expect(ReleaseVersion.buildVersion(for: "1.x.3") == nil)
     }
 
-    @Test func `build info contains version and commit hash`() {
+    @Test func buildInfoContainsVersionAndCommitHash() {
         #expect(!BuildInfo.version.isEmpty)
         #expect(!BuildInfo.gitCommitHash.isEmpty)
         #expect(BuildInfo.gitCommitHash != "unknown")

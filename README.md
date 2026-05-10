@@ -73,13 +73,13 @@ launch smoke test for the menu bar app on CI.
 
 ## Build
 
-CI and release builds target Xcode 26.4+ with the Swift 6.3 compiler. The
+CI and release builds target Xcode 26.2 with the Swift 6.2 compiler. The
 project itself uses Swift 6 language mode (`SWIFT_VERSION = 6.0`), and
-`.swift-version` pins local CLI tool usage to Swift 6.3.1 when using `swiftly`.
+`.swift-version` pins local CLI tool usage to Swift 6.2.3 when using `swiftly`.
 
 ```bash
-swiftly install 6.3.1
-swiftly use 6.3.1
+swiftly install 6.2.3
+swiftly use 6.2.3
 swiftly run swift --version
 ```
 

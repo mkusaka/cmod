@@ -45,14 +45,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select Xcode with Swift 6.3
+      - name: Select Xcode with Swift 6.2
         run: |
-          if [[ -d /Applications/Xcode_26.4.1.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.1.app/Contents/Developer
-          elif [[ -d /Applications/Xcode_26.4.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.app/Contents/Developer
+          if [[ -d /Applications/Xcode_26.2.app ]]; then
+            sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
           else
-            echo "::error::Xcode 26.4+ is required for Swift 6.3"
+            echo "::error::Xcode 26.2 is required for Swift 6.2"
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
@@ -61,7 +59,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-          swift --version | grep -q 'Swift version 6\.3'
+          swift --version | grep -q 'Swift version 6\.2'
 
       - name: Set version
         env:

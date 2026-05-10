@@ -18,8 +18,8 @@ eikana に着想を得ているが、最初のプロダクトスライスは意�
 | 項目 | 要件 |
 |------|------|
 | OS | macOS 15.5+ |
-| Xcode | CI / release build は 26.4+ |
-| Swift | Swift compiler 6.3+ / Swift 6 language mode。ローカルの `swiftly` 利用は `.swift-version` で 6.3.1 に固定 |
+| Xcode | CI / release build は 26.2 |
+| Swift | Swift compiler 6.2 / Swift 6 language mode。ローカルの `swiftly` 利用は `.swift-version` で 6.2.3 に固定 |
 
 ## Architecture
 
@@ -359,10 +359,11 @@ xcodebuild -project Cmod.xcodeproj \
 
 | Job | Runner | Checks |
 |-----|--------|--------|
-| `Lint` | `macos-26` | Xcode 26.4+, Swift 6.3 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
-| `Unit Tests (macos-15)` | `macos-15` | `xcodebuild ... -only-testing:CmodTests test` |
-| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, `xcodebuild ... -only-testing:CmodTests test` |
-| `UI Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
+| `Lint` | `macos-26` | Xcode 26.2, Swift 6.2 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
+| `Unit Tests (macos-15)` | `macos-15` | Xcode 26.2, Swift 6.2 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.2, Swift 6.2 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `UI Tests (macos-15)` | `macos-15` | Xcode 26.2, Swift 6.2 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
+| `UI Tests (macos-26)` | `macos-26` | Xcode 26.2, Swift 6.2 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
 
 ### Release Workflow
 

@@ -18,8 +18,8 @@ The app is inspired by eikana, but intentionally keeps the first product slice s
 | Item | Requirement |
 |------|-------------|
 | OS | macOS 15.5+ |
-| Xcode | 26.4+ for CI and release builds |
-| Swift | Swift compiler 6.3+ with Swift 6 language mode; `.swift-version` pins local `swiftly` usage to 6.3.1 |
+| Xcode | 26.2 for CI and release builds |
+| Swift | Swift compiler 6.2 with Swift 6 language mode; `.swift-version` pins local `swiftly` usage to 6.2.3 |
 
 ## Architecture
 
@@ -360,10 +360,11 @@ xcodebuild -project Cmod.xcodeproj \
 
 | Job | Runner | Checks |
 |-----|--------|--------|
-| `Lint` | `macos-26` | Xcode 26.4+, Swift 6.3 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
-| `Unit Tests (macos-15)` | `macos-15` | `xcodebuild ... -only-testing:CmodTests test` |
-| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, `xcodebuild ... -only-testing:CmodTests test` |
-| `UI Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
+| `Lint` | `macos-26` | Xcode 26.2, Swift 6.2 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
+| `Unit Tests (macos-15)` | `macos-15` | Xcode 26.2, Swift 6.2 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.2, Swift 6.2 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `UI Tests (macos-15)` | `macos-15` | Xcode 26.2, Swift 6.2 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
+| `UI Tests (macos-26)` | `macos-26` | Xcode 26.2, Swift 6.2 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
 
 ### Release Workflow
 

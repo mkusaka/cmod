@@ -22,14 +22,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select Xcode with Swift 6.3
+      - name: Select Xcode with Swift 6.2
         run: |
-          if [[ -d /Applications/Xcode_26.4.1.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.1.app/Contents/Developer
-          elif [[ -d /Applications/Xcode_26.4.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.app/Contents/Developer
+          if [[ -d /Applications/Xcode_26.2.app ]]; then
+            sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
           else
-            echo "::error::Xcode 26.4+ is required for Swift 6.3"
+            echo "::error::Xcode 26.2 is required for Swift 6.2"
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
@@ -38,7 +36,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-          swift --version | grep -q 'Swift version 6\.3'
+          swift --version | grep -q 'Swift version 6\.2'
 
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
@@ -78,15 +76,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select Xcode with Swift 6.3
-        if: matrix.macos-version == 'macos-26'
+      - name: Select Xcode with Swift 6.2
         run: |
-          if [[ -d /Applications/Xcode_26.4.1.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.1.app/Contents/Developer
-          elif [[ -d /Applications/Xcode_26.4.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.app/Contents/Developer
+          if [[ -d /Applications/Xcode_26.2.app ]]; then
+            sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
           else
-            echo "::error::Xcode 26.4+ is required for Swift 6.3"
+            echo "::error::Xcode 26.2 is required for Swift 6.2"
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
@@ -95,9 +90,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-          if [[ "${{ matrix.macos-version }}" == "macos-26" ]]; then
-            swift --version | grep -q 'Swift version 6\.3'
-          fi
+          swift --version | grep -q 'Swift version 6\.2'
 
       - name: Run unit tests
         run: |
@@ -110,9 +103,15 @@ jobs:
             CODE_SIGNING_REQUIRED=NO
 
   ui-test:
-    name: UI Tests (macos-26)
-    runs-on: macos-26
+    name: UI Tests (${{ matrix.macos-version }})
+    runs-on: ${{ matrix.macos-version }}
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        macos-version:
+          - macos-15
+          - macos-26
     permissions:
       contents: read
     steps:
@@ -120,14 +119,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select Xcode with Swift 6.3
+      - name: Select Xcode with Swift 6.2
         run: |
-          if [[ -d /Applications/Xcode_26.4.1.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.1.app/Contents/Developer
-          elif [[ -d /Applications/Xcode_26.4.app ]]; then
-            sudo xcode-select -s /Applications/Xcode_26.4.app/Contents/Developer
+          if [[ -d /Applications/Xcode_26.2.app ]]; then
+            sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
           else
-            echo "::error::Xcode 26.4+ is required for Swift 6.3"
+            echo "::error::Xcode 26.2 is required for Swift 6.2"
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
@@ -136,7 +133,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-          swift --version | grep -q 'Swift version 6\.3'
+          swift --version | grep -q 'Swift version 6\.2'
 
       - name: Run UI tests
         run: |
