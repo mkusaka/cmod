@@ -34,7 +34,7 @@ jobs:
       - name: Detect files changed from main
         id: filter
         if: github.event_name != 'workflow_call'
-        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
+        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
         with:
           base: main
           filters: |
@@ -65,7 +65,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           version: 2026.3.9
           cache: true
@@ -78,6 +78,14 @@ jobs:
 
       - name: GitHub Actions lint
         run: mise exec -- actionlint
+
+      - name: GitHub Actions security lint
+        run: mise exec -- zizmor --offline .
+
+      - name: GitHub Actions pin check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: mise exec -- pinact run --check
 
   unit-test:
     name: Unit Tests

@@ -94,6 +94,14 @@ mise install
 mise exec -- swiftformat .
 mise exec -- swiftlint lint --quiet
 mise exec -- actionlint
+mise exec -- zizmor --offline .
+mise exec -- pinact run --check
+```
+
+Update pinned GitHub Actions manually when needed:
+
+```bash
+mise exec -- pinact run -u
 ```
 
 Install the optional pre-commit hooks:
