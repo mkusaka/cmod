@@ -14,10 +14,8 @@ struct CmodApp: App {
     private let runtime = CmodRuntime.shared
 
     var body: some Scene {
-        WindowGroup {
-            ContentView(state: runtime.state)
+        Settings {
+            EmptyView()
         }
-        .defaultSize(width: 420, height: 180)
-        .windowResizability(.contentSize)
     }
 }

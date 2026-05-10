@@ -46,14 +46,6 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         settingsItem.target = self
         menu.addItem(settingsItem)
 
-        let debugWindowItem = NSMenuItem(
-            title: "Show Diagnostics Window",
-            action: #selector(showDebugWindow),
-            keyEquivalent: ""
-        )
-        debugWindowItem.target = self
-        menu.addItem(debugWindowItem)
-
         let refreshItem = NSMenuItem(
             title: "Refresh Permission Status",
             action: #selector(refreshPermissionStatus),
@@ -107,11 +99,6 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     @objc
     private func showSettings() {
         runtime.showSettings()
-    }
-
-    @objc
-    private func showDebugWindow() {
-        runtime.showDebugWindow()
     }
 
     @objc

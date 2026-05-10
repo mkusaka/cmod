@@ -11,9 +11,6 @@ final class SettingsWindowController {
             appUpdater: runtime.appUpdater,
             refreshPermissions: { [weak runtime] in
                 runtime?.refreshPermissionStatus(prompt: true)
-            },
-            showDebugWindow: { [weak runtime] in
-                runtime?.showDebugWindow()
             }
         )
 

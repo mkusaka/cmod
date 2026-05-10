@@ -9,7 +9,7 @@ It watches left and right Command key taps globally:
 - Command shortcuts, mouse clicks, and overlapping Command keys are ignored
 
 The app intentionally keeps the first slice small: no login item and no per-key
-customization yet. Settings and diagnostics are available from the menu bar.
+customization yet. Settings are available from the menu bar.
 
 ## Install
 
@@ -41,7 +41,7 @@ again from Finder.
 
 Cmod uses native macOS APIs directly:
 
-- `SwiftUI`: small status/debug window used by the app and previews
+- `SwiftUI`: settings window and previews
 - `AppKit`: app lifecycle and menu bar item
 - `CoreGraphics`: listen-only event tap for global keyboard/mouse events
 - `ApplicationServices`: Accessibility trust prompt/status
@@ -55,7 +55,6 @@ CmodApp
 ├─ AppDelegate
 ├─ MenuBarController
 ├─ SettingsWindowController
-├─ DebugWindowController
 ├─ AppUpdaterController
 ├─ CmodRuntime
 ├─ PermissionService

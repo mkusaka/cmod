@@ -6,7 +6,6 @@ struct SettingsView: View {
 
     private let appUpdater: AppUpdaterController
     private let refreshPermissions: () -> Void
-    private let showDebugWindow: () -> Void
 
     @State private var automaticallyChecksForUpdates: Bool
     @State private var automaticallyDownloadsUpdates: Bool
@@ -14,13 +13,11 @@ struct SettingsView: View {
     init(
         state: CmodState,
         appUpdater: AppUpdaterController,
-        refreshPermissions: @escaping () -> Void,
-        showDebugWindow: @escaping () -> Void
+        refreshPermissions: @escaping () -> Void
     ) {
         self.state = state
         self.appUpdater = appUpdater
         self.refreshPermissions = refreshPermissions
-        self.showDebugWindow = showDebugWindow
         _automaticallyChecksForUpdates = State(initialValue: appUpdater.updater.automaticallyChecksForUpdates)
         _automaticallyDownloadsUpdates = State(initialValue: appUpdater.updater.automaticallyDownloadsUpdates)
     }
@@ -59,23 +56,17 @@ struct SettingsView: View {
                     LabeledContent("Last Switch", value: state.lastAction?.menuLabel ?? "None")
                 }
 
-                Section("Diagnostics") {
+                Section("Permissions") {
                     Button {
                         refreshPermissions()
                     } label: {
                         Label("Refresh Permissions", systemImage: "lock.shield")
                     }
-
-                    Button {
-                        showDebugWindow()
-                    } label: {
-                        Label("Show Diagnostics Window", systemImage: "ladybug")
-                    }
                 }
             }
             .padding(20)
             .tabItem {
-                Label("Diagnostics", systemImage: "waveform.path.ecg")
+                Label("Status", systemImage: "checkmark.shield")
             }
         }
         .frame(width: 500, height: 320)
@@ -91,7 +82,6 @@ struct SettingsView: View {
             return state
         }(),
         appUpdater: AppUpdaterController(),
-        refreshPermissions: {},
-        showDebugWindow: {}
+        refreshPermissions: {}
     )
 }

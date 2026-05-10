@@ -18,7 +18,6 @@ final class CmodRuntime {
 
     private let permissionService: PermissionService
     private let eventTap: GlobalCommandKeyEventTap?
-    private let debugWindowController: DebugWindowController
     private let settingsWindowController: SettingsWindowController
 
     private init(configuration: CmodConfiguration = CmodConfiguration()) {
@@ -26,7 +25,6 @@ final class CmodRuntime {
         state = CmodState()
         appUpdater = AppUpdaterController()
         permissionService = PermissionService()
-        debugWindowController = DebugWindowController()
         settingsWindowController = SettingsWindowController()
 
         if configuration.isUITesting {
@@ -73,9 +71,5 @@ final class CmodRuntime {
 
     func showSettings() {
         settingsWindowController.show(runtime: self)
-    }
-
-    func showDebugWindow() {
-        debugWindowController.show(state: state)
     }
 }
