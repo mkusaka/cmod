@@ -295,7 +295,7 @@ jobs:
           fi
 
           {
-            while IFS= read -r line; do
+            while IFS= read -r line || [[ -n "$line" ]]; do
               if [[ "$line" == *"</channel>"* ]]; then
                 cat new_item.xml
               fi
