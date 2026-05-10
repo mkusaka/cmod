@@ -51,6 +51,7 @@ struct SettingsView: View {
 
             Form {
                 Section("Status") {
+                    LabeledContent("Version", value: BuildInfo.displayVersion)
                     LabeledContent("Monitoring", value: state.monitoringActive ? "Active" : "Inactive")
                     LabeledContent("Accessibility", value: state.accessibilityStatus.menuLabel)
                     LabeledContent("Last Switch", value: state.lastAction?.menuLabel ?? "None")

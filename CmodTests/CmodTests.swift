@@ -55,4 +55,14 @@ struct CmodTests {
         #expect(ReleaseVersion.buildVersion(for: "1.2.3.4") == nil)
         #expect(ReleaseVersion.buildVersion(for: "1.x.3") == nil)
     }
+
+    @Test func buildInfoContainsVersionAndCommitHash() {
+        #expect(!BuildInfo.version.isEmpty)
+        #expect(!BuildInfo.gitCommitHash.isEmpty)
+        #expect(BuildInfo.gitCommitHash != "unknown")
+        #expect(BuildInfo.gitCommitHashFull != "unknown")
+        #expect(BuildInfo.gitCommitHashFull.count >= BuildInfo.gitCommitHash.count)
+        #expect(BuildInfo.displayVersion.contains(BuildInfo.version))
+        #expect(BuildInfo.displayVersion.contains(BuildInfo.gitCommitHash))
+    }
 }

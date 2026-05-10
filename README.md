@@ -57,11 +57,15 @@ CmodApp
 ├─ SettingsWindowController
 ├─ AppUpdaterController
 ├─ CmodRuntime
+├─ BuildInfo
 ├─ PermissionService
 ├─ GlobalCommandKeyEventTap
 ├─ CommandKeyDetector
 └─ JISInputSwitcher
 ```
+
+The About panel and Settings status tab show the build version together with the
+short Git commit hash generated at build time.
 
 `CommandKeyDetector` is isolated as pure logic so the key behavior can be unit
 tested without installing a global event tap.

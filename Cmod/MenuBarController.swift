@@ -104,7 +104,10 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     @objc
     private func showAboutPanel() {
         NSApplication.shared.activate(ignoringOtherApps: true)
-        NSApplication.shared.orderFrontStandardAboutPanel(options: [:])
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [
+            .applicationVersion: BuildInfo.displayVersion,
+            .version: "",
+        ])
     }
 
     @objc
