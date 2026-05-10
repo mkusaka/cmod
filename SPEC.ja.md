@@ -33,8 +33,8 @@ eikana に着想を得ているが、最初のプロダクトスライスは意�
 | 設定ウィンドウ | 標準 `NSWindow` + `NSHostingController` |
 | グローバルキー監視 | CoreGraphics listen-only `CGEventTap` |
 | 権限状態 | ApplicationServices Accessibility API |
-| 入力切り替え | CoreGraphics の合成キーボードイベント |
-| JIS キーコード | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
+| 入力切り替え | Carbon Text Input Source Services (`TISSelectInputSource`) |
+| fallback JIS キーコード | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
 | 自動更新 | Sparkle 2 (`SPUStandardUpdaterController`) |
 | 状態管理 | `ObservableObject` + `@Published` |
 
@@ -62,7 +62,7 @@ Cmod/
 ├── PermissionService.swift        # Accessibility trust status
 ├── GlobalCommandKeyEventTap.swift # listen-only global event tap
 ├── CommandKeyDetector.swift       # Command 単体タップの純粋な状態機械
-├── InputSwitcher.swift            # JIS 英数/かな合成キーイベント
+├── InputSwitcher.swift            # Text input source selection
 ├── AppUpdaterController.swift     # Sparkle updater wrapper
 ├── BuildInfo.swift                # 表示用 version formatting
 ├── BuildInfo.generated.swift      # build-time 生成値の placeholder
@@ -123,7 +123,14 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 
 ### Input Switching
 
-`JISInputSwitcher` は合成 key down/up event を送出する。
+`TISInputSwitcher` は有効な入力ソースを直接選択する。
+
+| Action | 優先する入力ソース |
+|--------|--------------------|
+| `.switchToEnglish` | Google 日本語入力の英数、次に ABC/US keyboard layout |
+| `.switchToKana` | Google 日本語入力のひらがな、次に Apple 日本語のひらがな |
+
+優先する selectable source がない場合は、fallback として JIS key down/up event を送出する。
 
 | Action | 送出キー |
 |--------|----------|
@@ -145,7 +152,7 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 | `CmodState` | monitoring、permission、last action の公開状態 |
 | `PermissionService` | Accessibility trust status と prompt |
 | `GlobalCommandKeyEventTap` | グローバル keyboard/mouse monitoring |
-| `JISInputSwitcher` | 入力モード切り替え |
+| `TISInputSwitcher` | 入力モード切り替え |
 | `SettingsWindowController` | 設定ウィンドウ表示 |
 | `AppUpdaterController` | Sparkle の起動と手動 update check |
 
@@ -229,11 +236,11 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 
 ## Permissions
 
-Cmod はグローバルキーボード監視と合成入力切り替えのために macOS 権限を必要とする。
+Cmod はグローバルキーボード監視のために macOS 権限を必要とする。主な入力切り替え経路は Text Input Source Services を使い、JIS 合成キーイベントは fallback としてのみ使う。
 
 | 権限 | 用途 |
 |------|------|
-| Accessibility | `AXIsProcessTrustedWithOptions` による trust check。event tap と合成キーイベントに必要になる場合がある |
+| Accessibility | `AXIsProcessTrustedWithOptions` による trust check。global event tap に必要 |
 | Input Monitoring | グローバルキーボードイベント監視時に macOS から要求される場合がある |
 
 アプリが明示的に確認するのは Accessibility status。event tap を作れない場合、monitoring status は次の message になる。
@@ -401,7 +408,7 @@ manual `workflow_dispatch` は signing、notarization、export を検証する�
 ## Known Limitations
 
 - 入力マッピングは固定: 左 Command -> English、右 Command -> Kana。
-- 実装済みの切り替えは JIS 英数/かなのみ。
+- 入力ソース切り替えは Google 日本語入力と Apple 日本語/ABC source を優先する。
 - login item support はまだ実装していない。
 - key customization UI はまだ実装していない。
 - 権限回復後は、ユーザーが macOS Settings で許可したうえで restart または status refresh する必要がある。

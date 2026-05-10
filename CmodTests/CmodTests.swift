@@ -65,4 +65,70 @@ struct CmodTests {
         #expect(BuildInfo.displayVersion.contains(BuildInfo.version))
         #expect(BuildInfo.displayVersion.contains(BuildInfo.gitCommitHash))
     }
+
+    @Test @MainActor func googleJapaneseInputSourcesArePreferred() {
+        let sources = [
+            inputSource(id: "com.apple.keylayout.ABC", name: "ABC"),
+            inputSource(id: "com.google.inputmethod.Japanese.Roman", name: "Alphanumeric (Google)"),
+            inputSource(id: "com.google.inputmethod.Japanese.base", name: "Hiragana (Google)"),
+            inputSource(id: "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese", name: "Hiragana"),
+        ]
+
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToEnglish, from: sources)
+                == "com.google.inputmethod.Japanese.Roman",
+        )
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToKana, from: sources)
+                == "com.google.inputmethod.Japanese.base",
+        )
+    }
+
+    @Test @MainActor func appleInputSourcesAreFallbacks() {
+        let sources = [
+            inputSource(id: "com.apple.keylayout.ABC", name: "ABC"),
+            inputSource(id: "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese", name: "Hiragana"),
+        ]
+
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToEnglish, from: sources)
+                == "com.apple.keylayout.ABC",
+        )
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToKana, from: sources)
+                == "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese",
+        )
+    }
+
+    @Test @MainActor func unavailableInputSourcesAreIgnored() {
+        let sources = [
+            inputSource(id: "com.google.inputmethod.Japanese.Roman", name: "Alphanumeric (Google)", isEnabled: false),
+            inputSource(id: "com.google.inputmethod.Japanese.base", name: "Hiragana (Google)", isSelectCapable: false),
+            inputSource(id: "com.apple.keylayout.ABC", name: "ABC"),
+            inputSource(id: "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese", name: "Hiragana"),
+        ]
+
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToEnglish, from: sources)
+                == "com.apple.keylayout.ABC",
+        )
+        #expect(
+            InputSourceResolver.preferredID(for: .switchToKana, from: sources)
+                == "com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese",
+        )
+    }
+
+    private func inputSource(
+        id: String,
+        name: String,
+        isSelectCapable: Bool = true,
+        isEnabled: Bool = true,
+    ) -> InputSourceDescriptor {
+        InputSourceDescriptor(
+            id: id,
+            localizedName: name,
+            isSelectCapable: isSelectCapable,
+            isEnabled: isEnabled,
+        )
+    }
 }

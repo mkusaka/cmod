@@ -33,8 +33,8 @@ The app is inspired by eikana, but intentionally keeps the first product slice s
 | Settings Window | Standard `NSWindow` with `NSHostingController` |
 | Global Key Monitoring | CoreGraphics listen-only `CGEventTap` |
 | Permission Status | ApplicationServices Accessibility API |
-| Input Switching | CoreGraphics synthetic keyboard events |
-| JIS Key Codes | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
+| Input Switching | Carbon Text Input Source Services (`TISSelectInputSource`) |
+| Fallback JIS Key Codes | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
 | Updates | Sparkle 2 via `SPUStandardUpdaterController` |
 | State Management | `ObservableObject` + `@Published` |
 
@@ -62,7 +62,7 @@ Cmod/
 ├── PermissionService.swift        # Accessibility trust status
 ├── GlobalCommandKeyEventTap.swift # Listen-only global event tap
 ├── CommandKeyDetector.swift       # Pure command tap state machine
-├── InputSwitcher.swift            # JIS Eisu/Kana synthetic key events
+├── InputSwitcher.swift            # Text input source selection
 ├── AppUpdaterController.swift     # Sparkle updater wrapper
 ├── BuildInfo.swift                # Display version formatting
 ├── BuildInfo.generated.swift      # Build-time generated version/hash placeholders
@@ -123,7 +123,14 @@ The event tap does not consume or rewrite user input. It returns the original `C
 
 ### Input Switching
 
-`JISInputSwitcher` posts synthetic key down/up events:
+`TISInputSwitcher` selects enabled input sources directly:
+
+| Action | Preferred Input Source |
+|--------|------------------------|
+| `.switchToEnglish` | Google Japanese Alphanumeric, then ABC/US keyboard layout |
+| `.switchToKana` | Google Japanese Hiragana, then Apple Japanese Hiragana |
+
+If no preferred selectable source is available, it falls back to posting JIS key down/up events:
 
 | Action | Posted Key |
 |--------|------------|
@@ -145,7 +152,7 @@ Synthetic events are posted to `.cghidEventTap` with empty flags so the switch a
 | `CmodState` | Published monitoring, permission, and last-action state |
 | `PermissionService` | Accessibility trust status and prompt |
 | `GlobalCommandKeyEventTap` | Global keyboard and mouse monitoring |
-| `JISInputSwitcher` | Input mode switching |
+| `TISInputSwitcher` | Input mode switching |
 | `SettingsWindowController` | Settings window presentation |
 | `AppUpdaterController` | Sparkle startup and manual update checks |
 
@@ -229,11 +236,11 @@ The tab also includes a "Refresh Permissions" button that re-checks Accessibilit
 
 ## Permissions
 
-Cmod needs macOS permission for global keyboard monitoring and synthetic input switching.
+Cmod needs macOS permission for global keyboard monitoring. The primary input switch path uses Text Input Source Services; JIS synthetic key events are only a fallback.
 
 | Permission | Usage |
 |------------|-------|
-| Accessibility | Trust check via `AXIsProcessTrustedWithOptions`; may be required for event tap and posted key events |
+| Accessibility | Trust check via `AXIsProcessTrustedWithOptions`; required for the global event tap |
 | Input Monitoring | May be requested by macOS for global keyboard event monitoring |
 
 The app explicitly checks Accessibility status. If the event tap cannot be created, the monitoring status is set to:
@@ -402,7 +409,7 @@ Manual `workflow_dispatch` runs validate signing, notarization, and export witho
 ## Known Limitations
 
 - Input mappings are fixed: left Command -> English, right Command -> Kana.
-- Only JIS Eisu/Kana switching is implemented.
+- Input source switching prefers Google Japanese Input and Apple Japanese/ABC sources.
 - No login item support is implemented yet.
 - No per-key customization UI is implemented yet.
 - Permission recovery still requires the user to approve macOS settings and restart or refresh status manually.

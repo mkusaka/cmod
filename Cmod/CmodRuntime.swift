@@ -17,7 +17,7 @@ final class CmodRuntime {
         permissionService = PermissionService()
         settingsWindowController = SettingsWindowController()
         eventTap = GlobalCommandKeyEventTap(
-            inputSwitcher: JISInputSwitcher(),
+            inputSwitcher: TISInputSwitcher(),
             onAction: { [state] action in
                 state.record(action: action)
             },

@@ -45,7 +45,7 @@ Cmod uses native macOS APIs directly:
 - `AppKit`: app lifecycle and menu bar item
 - `CoreGraphics`: listen-only event tap for global keyboard/mouse events
 - `ApplicationServices`: Accessibility trust prompt/status
-- `Carbon.HIToolbox`: JIS virtual key codes for Eisu and Kana
+- `Carbon.HIToolbox`: input source selection and fallback JIS key codes
 - `Sparkle`: in-app update checks against a signed appcast feed
 
 Runtime shape:
@@ -61,7 +61,7 @@ CmodApp
 ├─ PermissionService
 ├─ GlobalCommandKeyEventTap
 ├─ CommandKeyDetector
-└─ JISInputSwitcher
+└─ TISInputSwitcher
 ```
 
 The About panel and Settings status tab show the build version together with the
