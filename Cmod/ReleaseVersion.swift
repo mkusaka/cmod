@@ -1,5 +1,5 @@
 enum ReleaseVersion {
-    static func buildVersion(for marketingVersion: String) -> Int? {
+    nonisolated static func buildVersion(for marketingVersion: String) -> Int? {
         let components = marketingVersion.split(separator: ".", omittingEmptySubsequences: false)
         guard (1 ... 3).contains(components.count) else {
             return nil

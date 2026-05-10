@@ -2,7 +2,7 @@
 // Values below are placeholders overwritten at build time with git info.
 
 enum BuildInfo {
-    static let gitCommitHash = "unknown"
-    static let gitCommitHashFull = "unknown"
-    static let version = "1.0"
+    nonisolated static let gitCommitHash = "unknown"
+    nonisolated static let gitCommitHashFull = "unknown"
+    nonisolated static let version = "1.0"
 }

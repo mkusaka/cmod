@@ -1,5 +1,5 @@
 extension BuildInfo {
-    static var displayVersion: String {
+    nonisolated static var displayVersion: String {
         "\(version) (\(gitCommitHash))"
     }
 }

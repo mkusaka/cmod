@@ -1,2 +1,2 @@
---swiftversion 5.9
+--swiftversion 6.0
 --exclude .build,DerivedData,scripts
