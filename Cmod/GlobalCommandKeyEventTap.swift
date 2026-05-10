@@ -6,7 +6,7 @@ private nonisolated func cmodEventTapCallback(
     proxy _: CGEventTapProxy,
     type: CGEventType,
     event: CGEvent,
-    userInfo: UnsafeMutableRawPointer?
+    userInfo: UnsafeMutableRawPointer?,
 ) -> Unmanaged<CGEvent>? {
     guard let userInfo else {
         return Unmanaged.passUnretained(event)
@@ -44,7 +44,7 @@ final class GlobalCommandKeyEventTap {
     init(
         inputSwitcher: any InputSwitching,
         onAction: @escaping (InputModeAction) -> Void,
-        onMonitoringChanged: @escaping (Bool, String) -> Void
+        onMonitoringChanged: @escaping (Bool, String) -> Void,
     ) {
         self.inputSwitcher = inputSwitcher
         self.onAction = onAction
@@ -70,7 +70,7 @@ final class GlobalCommandKeyEventTap {
             options: .listenOnly,
             eventsOfInterest: mask,
             callback: cmodEventTapCallback,
-            userInfo: Unmanaged.passUnretained(self).toOpaque()
+            userInfo: Unmanaged.passUnretained(self).toOpaque(),
         ) else {
             return false
         }

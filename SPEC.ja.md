@@ -18,8 +18,8 @@ eikana に着想を得ているが、最初のプロダクトスライスは意�
 | 項目 | 要件 |
 |------|------|
 | OS | macOS 15.5+ |
-| Xcode | 16+ |
-| Swift | 5.0 |
+| Xcode | CI / release build は 26.4+ |
+| Swift | Swift compiler 6.3+ / Swift 6 language mode。ローカルの `swiftly` 利用は `.swift-version` で 6.3.1 に固定 |
 
 ## Architecture
 
@@ -71,6 +71,9 @@ Cmod/
 
 CmodTests/
 └── CmodTests.swift                # Swift Testing によるユニットテスト
+
+CmodUITests/
+└── CmodUITests.swift              # XCTest による UI launch smoke test
 
 Dependencies/
 └── CmodSparkle/                   # Sparkle import 用のローカル Swift package wrapper
@@ -301,8 +304,10 @@ Xcode の build phase が build 時に `Cmod/BuildInfo.generated.swift` を書�
 | Overlap safety | 左右 Command の重なり押しでは入力を切り替えない |
 | Release versioning | semantic version tag から単調増加する numeric build version を作る |
 | Build metadata | build info が version と git hash を持つ |
+| UI launch | menu bar app として起動できる |
 
 中核の入力挙動は `CommandKeyDetector` 経由でテストし、unit test では実際の global event tap をインストールしない。
+UI test は menu bar app の起動 smoke test に限定する。
 
 ### Test Commands
 
@@ -320,6 +325,30 @@ xcodebuild -project Cmod.xcodeproj \
   test
 ```
 
+UI smoke test のみ:
+
+```bash
+xcodebuild -project Cmod.xcodeproj \
+  -scheme Cmod \
+  -destination 'platform=macOS' \
+  -only-testing:CmodUITests \
+  test
+```
+
+local で UI smoke test を実行する前に、実行中の Cmod process は終了しておく。CI では UI test runner を Developer ID certificate なしで起動できるように、ad-hoc signing で実行する。
+
+```bash
+xcodebuild -project Cmod.xcodeproj \
+  -scheme Cmod \
+  -destination 'platform=macOS' \
+  -derivedDataPath .build/CmodUITestDerivedData \
+  -only-testing:CmodUITests \
+  test \
+  CODE_SIGN_IDENTITY=- \
+  CODE_SIGN_STYLE=Manual \
+  DEVELOPMENT_TEAM=
+```
+
 ---
 
 ## CI/CD
@@ -330,9 +359,10 @@ xcodebuild -project Cmod.xcodeproj \
 
 | Job | Runner | Checks |
 |-----|--------|--------|
-| `Lint` | `macos-15` | SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
+| `Lint` | `macos-26` | Xcode 26.4+, Swift 6.3 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
 | `Unit Tests (macos-15)` | `macos-15` | `xcodebuild ... -only-testing:CmodTests test` |
-| `Unit Tests (macos-26)` | `macos-26` | `xcodebuild ... -only-testing:CmodTests test` |
+| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `UI Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
 
 ### Release Workflow
 

@@ -10,13 +10,13 @@ let package = Package(
     products: [
         .library(
             name: "CmodSparkle",
-            targets: ["CmodSparkle"]
+            targets: ["CmodSparkle"],
         ),
     ],
     dependencies: [
         .package(
             url: "https://github.com/sparkle-project/Sparkle",
-            from: "2.9.1"
+            from: "2.9.1",
         ),
     ],
     targets: [
@@ -24,7 +24,7 @@ let package = Package(
             name: "CmodSparkle",
             dependencies: [
                 .product(name: "Sparkle", package: "Sparkle"),
-            ]
+            ],
         ),
-    ]
+    ],
 )

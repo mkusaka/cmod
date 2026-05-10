@@ -14,7 +14,7 @@ final class AppUpdaterController: NSObject {
         updaterController = SPUStandardUpdaterController(
             startingUpdater: false,
             updaterDelegate: nil,
-            userDriverDelegate: nil
+            userDriverDelegate: nil,
         )
         super.init()
     }

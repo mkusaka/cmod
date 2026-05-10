@@ -15,12 +15,12 @@ enum StatusBarIcon {
         drawKey(
             rect: NSRect(x: 1.5, y: 7.0, width: 10.5, height: 9.0),
             text: "A",
-            fontSize: 7.5
+            fontSize: 7.5,
         )
         drawKey(
             rect: NSRect(x: 8.0, y: 2.0, width: 10.5, height: 9.0),
             text: kanaText,
-            fontSize: 7.0
+            fontSize: 7.0,
         )
 
         image.isTemplate = true
@@ -48,7 +48,7 @@ enum StatusBarIcon {
             x: rect.minX,
             y: rect.minY + (rect.height - fontSize) * 0.5 - 0.8,
             width: rect.width,
-            height: fontSize + 2
+            height: fontSize + 2,
         )
         text.draw(in: textRect, withAttributes: attributes)
     }

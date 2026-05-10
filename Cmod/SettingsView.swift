@@ -13,7 +13,7 @@ struct SettingsView: View {
     init(
         state: CmodState,
         appUpdater: AppUpdaterController,
-        refreshPermissions: @escaping () -> Void
+        refreshPermissions: @escaping () -> Void,
     ) {
         self.state = state
         self.appUpdater = appUpdater
@@ -83,6 +83,6 @@ struct SettingsView: View {
             return state
         }(),
         appUpdater: AppUpdaterController(),
-        refreshPermissions: {}
+        refreshPermissions: {},
     )
 }

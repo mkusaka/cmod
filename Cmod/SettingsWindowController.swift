@@ -11,7 +11,7 @@ final class SettingsWindowController {
             appUpdater: runtime.appUpdater,
             refreshPermissions: { [weak runtime] in
                 runtime?.refreshPermissionStatus(prompt: true)
-            }
+            },
         )
 
         if let window {
@@ -24,7 +24,7 @@ final class SettingsWindowController {
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 320),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
-            defer: false
+            defer: false,
         )
         window.title = "Cmod Settings"
         window.isReleasedWhenClosed = false

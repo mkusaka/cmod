@@ -68,9 +68,20 @@ The About panel and Settings status tab show the build version together with the
 short Git commit hash generated at build time.
 
 `CommandKeyDetector` is isolated as pure logic so the key behavior can be unit
-tested without installing a global event tap.
+tested without installing a global event tap. `CmodUITests` covers a minimal
+launch smoke test for the menu bar app on CI.
 
 ## Build
+
+CI and release builds target Xcode 26.4+ with the Swift 6.3 compiler. The
+project itself uses Swift 6 language mode (`SWIFT_VERSION = 6.0`), and
+`.swift-version` pins local CLI tool usage to Swift 6.3.1 when using `swiftly`.
+
+```bash
+swiftly install 6.3.1
+swiftly use 6.3.1
+swiftly run swift --version
+```
 
 ```bash
 xcodebuild -project Cmod.xcodeproj -scheme Cmod -destination 'platform=macOS' build
@@ -86,6 +97,21 @@ open -n "$(xcodebuild -project Cmod.xcodeproj -scheme Cmod -configuration Debug 
 
 ```bash
 xcodebuild -project Cmod.xcodeproj -scheme Cmod -destination 'platform=macOS' test
+```
+
+Run only the UI smoke test. Quit any running Cmod process first so XCTest does
+not attach to an already-running app with the same bundle identifier.
+
+```bash
+xcodebuild -project Cmod.xcodeproj -scheme Cmod -destination 'platform=macOS' -only-testing:CmodUITests test
+```
+
+CI runs the UI smoke test with ad-hoc signing so the UI test runner can launch
+without a Developer ID certificate. When reproducing that locally, use a
+separate DerivedData path so the normal Debug app signing stays untouched:
+
+```bash
+xcodebuild -project Cmod.xcodeproj -scheme Cmod -destination 'platform=macOS' -derivedDataPath .build/CmodUITestDerivedData -only-testing:CmodUITests test CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
 ```
 
 ## Lint and Format

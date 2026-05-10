@@ -23,7 +23,7 @@ final class CmodRuntime {
             },
             onMonitoringChanged: { [state] isActive, message in
                 state.setMonitoringActive(isActive, message: message)
-            }
+            },
         )
     }
 
@@ -35,7 +35,7 @@ final class CmodRuntime {
         if !started {
             state.setMonitoringActive(
                 false,
-                message: "Keyboard monitoring is unavailable. Check Input Monitoring and Accessibility permissions."
+                message: "Keyboard monitoring is unavailable. Check Input Monitoring and Accessibility permissions.",
             )
         }
     }

@@ -1,5 +1,6 @@
 excluded:
   - .build
+  - Dependencies/CmodSparkle/.build
   - DerivedData
   - scripts
 

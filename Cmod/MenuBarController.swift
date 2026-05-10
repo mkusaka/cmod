@@ -41,7 +41,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         let settingsItem = NSMenuItem(
             title: "Settings...",
             action: #selector(showSettings),
-            keyEquivalent: ","
+            keyEquivalent: ",",
         )
         settingsItem.target = self
         menu.addItem(settingsItem)
@@ -49,7 +49,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         let refreshItem = NSMenuItem(
             title: "Refresh Permission Status",
             action: #selector(refreshPermissionStatus),
-            keyEquivalent: ""
+            keyEquivalent: "",
         )
         refreshItem.target = self
         menu.addItem(refreshItem)
@@ -65,7 +65,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         let checkForUpdatesItem = NSMenuItem(
             title: "Check for Updates...",
             action: #selector(AppUpdaterController.checkForUpdates(_:)),
-            keyEquivalent: ""
+            keyEquivalent: "",
         )
         checkForUpdatesItem.target = runtime.appUpdater
         menu.addItem(checkForUpdatesItem)

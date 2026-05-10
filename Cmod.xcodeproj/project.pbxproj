@@ -14,6 +14,13 @@
 			remoteGlobalIDString = 09B85EF82FB0D3BC00DC1046;
 			remoteInfo = Cmod;
 		};
+		C0D000012FB3000100000007 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 09B85EF12FB0D3BC00DC1046 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 09B85EF82FB0D3BC00DC1046;
+			remoteInfo = Cmod;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXBuildFile section */
@@ -23,6 +30,7 @@
 /* Begin PBXFileReference section */
 		09B85EF92FB0D3BC00DC1046 /* Cmod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cmod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B85F062FB0D3BD00DC1046 /* CmodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CmodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0D000012FB3000100000001 /* CmodUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CmodUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +42,11 @@
 		09B85F092FB0D3BD00DC1046 /* CmodTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CmodTests;
+			sourceTree = "<group>";
+		};
+		C0D000012FB3000100000002 /* CmodUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CmodUITests;
 			sourceTree = "<group>";
 		};
 		C0D000012FB1000100000004 /* Dependencies */ = {
@@ -59,6 +72,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0D000012FB3000100000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -67,6 +87,7 @@
 			children = (
 				09B85EFB2FB0D3BC00DC1046 /* Cmod */,
 				09B85F092FB0D3BD00DC1046 /* CmodTests */,
+				C0D000012FB3000100000002 /* CmodUITests */,
 				C0D000012FB1000100000004 /* Dependencies */,
 				09B85EFA2FB0D3BC00DC1046 /* Products */,
 			);
@@ -77,6 +98,7 @@
 			children = (
 				09B85EF92FB0D3BC00DC1046 /* Cmod.app */,
 				09B85F062FB0D3BD00DC1046 /* CmodTests.xctest */,
+				C0D000012FB3000100000001 /* CmodUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,6 +153,29 @@
 			productReference = 09B85F062FB0D3BD00DC1046 /* CmodTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		C0D000012FB3000100000006 /* CmodUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0D000012FB3000100000009 /* Build configuration list for PBXNativeTarget "CmodUITests" */;
+			buildPhases = (
+				C0D000012FB3000100000005 /* Sources */,
+				C0D000012FB3000100000003 /* Frameworks */,
+				C0D000012FB3000100000004 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0D000012FB3000100000008 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C0D000012FB3000100000002 /* CmodUITests */,
+			);
+			name = CmodUITests;
+			packageProductDependencies = (
+			);
+			productName = CmodUITests;
+			productReference = C0D000012FB3000100000001 /* CmodUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -145,6 +190,10 @@
 						CreatedOnToolsVersion = 26.3;
 					};
 					09B85F052FB0D3BD00DC1046 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 09B85EF82FB0D3BC00DC1046;
+					};
+					C0D000012FB3000100000006 = {
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = 09B85EF82FB0D3BC00DC1046;
 					};
@@ -169,6 +218,7 @@
 			targets = (
 				09B85EF82FB0D3BC00DC1046 /* Cmod */,
 				09B85F052FB0D3BD00DC1046 /* CmodTests */,
+				C0D000012FB3000100000006 /* CmodUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -182,6 +232,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		09B85F042FB0D3BD00DC1046 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0D000012FB3000100000004 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -224,6 +281,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0D000012FB3000100000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -231,6 +295,11 @@
 			isa = PBXTargetDependency;
 			target = 09B85EF82FB0D3BC00DC1046 /* Cmod */;
 			targetProxy = 09B85F072FB0D3BD00DC1046 /* PBXContainerItemProxy */;
+		};
+		C0D000012FB3000100000008 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 09B85EF82FB0D3BC00DC1046 /* Cmod */;
+			targetProxy = C0D000012FB3000100000007 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -463,6 +532,46 @@
 			};
 			name = Release;
 		};
+		C0D000012FB300010000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 857365MUEG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkusaka.CmodUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = Cmod;
+			};
+			name = Debug;
+		};
+		C0D000012FB300010000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 857365MUEG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkusaka.CmodUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = Cmod;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -489,6 +598,15 @@
 			buildConfigurations = (
 				09B85F1E2FB0D3BD00DC1046 /* Debug */,
 				09B85F1F2FB0D3BD00DC1046 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0D000012FB3000100000009 /* Build configuration list for PBXNativeTarget "CmodUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0D000012FB300010000000A /* Debug */,
+				C0D000012FB300010000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

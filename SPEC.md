@@ -18,8 +18,8 @@ The app is inspired by eikana, but intentionally keeps the first product slice s
 | Item | Requirement |
 |------|-------------|
 | OS | macOS 15.5+ |
-| Xcode | 16+ |
-| Swift | 5.0 |
+| Xcode | 26.4+ for CI and release builds |
+| Swift | Swift compiler 6.3+ with Swift 6 language mode; `.swift-version` pins local `swiftly` usage to 6.3.1 |
 
 ## Architecture
 
@@ -71,6 +71,9 @@ Cmod/
 
 CmodTests/
 └── CmodTests.swift                # Unit tests using Swift Testing
+
+CmodUITests/
+└── CmodUITests.swift              # UI launch smoke test using XCTest
 
 Dependencies/
 └── CmodSparkle/                   # Local Swift package wrapper for Sparkle imports
@@ -301,8 +304,10 @@ Framework: Swift Testing (`@Test`, `#expect`)
 | Overlap safety | Overlapping Command keys do not switch input |
 | Release versioning | Semantic version tags produce monotonic numeric build versions |
 | Build metadata | Build info contains version and git hash |
+| UI launch | App launches as a menu bar app |
 
 The core input behavior is tested through `CommandKeyDetector`, avoiding a real global event tap in unit tests.
+The UI test is intentionally a smoke test that launches the menu bar app.
 
 ### Test Commands
 
@@ -320,6 +325,31 @@ xcodebuild -project Cmod.xcodeproj \
   test
 ```
 
+For UI smoke tests only:
+
+```bash
+xcodebuild -project Cmod.xcodeproj \
+  -scheme Cmod \
+  -destination 'platform=macOS' \
+  -only-testing:CmodUITests \
+  test
+```
+
+Quit any running Cmod process before running the UI smoke test locally. CI runs
+the UI smoke test with ad-hoc signing:
+
+```bash
+xcodebuild -project Cmod.xcodeproj \
+  -scheme Cmod \
+  -destination 'platform=macOS' \
+  -derivedDataPath .build/CmodUITestDerivedData \
+  -only-testing:CmodUITests \
+  test \
+  CODE_SIGN_IDENTITY=- \
+  CODE_SIGN_STYLE=Manual \
+  DEVELOPMENT_TEAM=
+```
+
 ---
 
 ## CI/CD
@@ -330,9 +360,10 @@ xcodebuild -project Cmod.xcodeproj \
 
 | Job | Runner | Checks |
 |-----|--------|--------|
-| `Lint` | `macos-15` | SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
+| `Lint` | `macos-26` | Xcode 26.4+, Swift 6.3 check, SwiftFormat, SwiftLint, actionlint, zizmor, pinact |
 | `Unit Tests (macos-15)` | `macos-15` | `xcodebuild ... -only-testing:CmodTests test` |
-| `Unit Tests (macos-26)` | `macos-26` | `xcodebuild ... -only-testing:CmodTests test` |
+| `Unit Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, `xcodebuild ... -only-testing:CmodTests test` |
+| `UI Tests (macos-26)` | `macos-26` | Xcode 26.4+, Swift 6.3 check, ad-hoc signed `xcodebuild ... -only-testing:CmodUITests test` |
 
 ### Release Workflow
 
