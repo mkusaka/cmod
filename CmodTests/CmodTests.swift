@@ -9,9 +9,42 @@ import Testing
 @testable import Cmod
 
 struct CmodTests {
+    @Test func leftCommandTapSwitchesToEnglish() {
+        var detector = CommandKeyDetector()
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+        #expect(detector.handle(.flagsChanged(55)) == .switchToEnglish)
     }
 
+    @Test func rightCommandTapSwitchesToKana() {
+        var detector = CommandKeyDetector()
+
+        #expect(detector.handle(.flagsChanged(54)) == nil)
+        #expect(detector.handle(.flagsChanged(54)) == .switchToKana)
+    }
+
+    @Test func commandShortcutDoesNotSwitchInput() {
+        var detector = CommandKeyDetector()
+
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+        #expect(detector.handle(.keyDown(8)) == nil)
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+    }
+
+    @Test func commandClickDoesNotSwitchInput() {
+        var detector = CommandKeyDetector()
+
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+        #expect(detector.handle(.otherInput) == nil)
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+    }
+
+    @Test func overlappingCommandKeysDoNotSwitchInput() {
+        var detector = CommandKeyDetector()
+
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+        #expect(detector.handle(.flagsChanged(54)) == nil)
+        #expect(detector.handle(.flagsChanged(55)) == nil)
+        #expect(detector.handle(.flagsChanged(54)) == nil)
+    }
 }
