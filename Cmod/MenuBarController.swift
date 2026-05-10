@@ -22,13 +22,10 @@ final class MenuBarController: NSObject, NSMenuDelegate {
 
     private func configureStatusItem() {
         if let button = statusItem.button {
-            let configuration = NSImage.SymbolConfiguration(pointSize: 14, weight: .semibold)
-            button.image = NSImage(
-                systemSymbolName: "command",
-                accessibilityDescription: "Cmod"
-            )?.withSymbolConfiguration(configuration)
-            button.image?.isTemplate = true
-            button.toolTip = "Cmod"
+            button.image = StatusBarIcon.make()
+            button.imagePosition = .imageOnly
+            button.toolTip = "Cmod input switcher"
+            button.setAccessibilityLabel("Cmod input switcher")
         }
         statusItem.menu = menu
     }

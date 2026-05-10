@@ -9,21 +9,21 @@ import Testing
 @testable import Cmod
 
 struct CmodTests {
-    @Test func leftCommandTapSwitchesToEnglish() {
+    @Test @MainActor func leftCommandTapSwitchesToEnglish() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
         #expect(detector.handle(.flagsChanged(55)) == .switchToEnglish)
     }
 
-    @Test func rightCommandTapSwitchesToKana() {
+    @Test @MainActor func rightCommandTapSwitchesToKana() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(54)) == nil)
         #expect(detector.handle(.flagsChanged(54)) == .switchToKana)
     }
 
-    @Test func commandShortcutDoesNotSwitchInput() {
+    @Test @MainActor func commandShortcutDoesNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
@@ -31,7 +31,7 @@ struct CmodTests {
         #expect(detector.handle(.flagsChanged(55)) == nil)
     }
 
-    @Test func commandClickDoesNotSwitchInput() {
+    @Test @MainActor func commandClickDoesNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
@@ -39,7 +39,7 @@ struct CmodTests {
         #expect(detector.handle(.flagsChanged(55)) == nil)
     }
 
-    @Test func overlappingCommandKeysDoNotSwitchInput() {
+    @Test @MainActor func overlappingCommandKeysDoNotSwitchInput() {
         var detector = CommandKeyDetector()
 
         #expect(detector.handle(.flagsChanged(55)) == nil)
