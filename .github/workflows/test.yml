@@ -45,8 +45,14 @@ jobs:
         run: mise exec -- pinact run --check
 
   unit-test:
-    name: Unit Tests
-    runs-on: macos-15
+    name: Unit Tests (${{ matrix.macos-version }})
+    runs-on: ${{ matrix.macos-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        macos-version:
+          - macos-15
+          - macos-26
     permissions:
       contents: read
     steps:
