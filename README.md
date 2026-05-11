@@ -8,8 +8,8 @@ It watches left and right Command key taps globally:
 - Right Command tap: switch to Kana input
 - Command shortcuts, mouse clicks, and overlapping Command keys are ignored
 
-The app intentionally keeps the first slice small: no login item and no per-key
-customization yet. Settings are available from the menu bar.
+The app intentionally keeps the first slice small: launch-at-login is supported,
+but per-key customization is not. Settings are available from the menu bar.
 
 ## Install
 
@@ -45,6 +45,7 @@ Cmod uses native macOS APIs directly:
 - `AppKit`: app lifecycle and menu bar item
 - `CoreGraphics`: listen-only event tap for global keyboard/mouse events
 - `ApplicationServices`: Accessibility trust prompt/status
+- `ServiceManagement`: launch-at-login registration
 - `Carbon.HIToolbox`: input source selection and fallback JIS key codes
 - `Sparkle`: in-app update checks against a signed appcast feed
 
@@ -56,6 +57,7 @@ CmodApp
 ├─ MenuBarController
 ├─ SettingsWindowController
 ├─ AppUpdaterController
+├─ LaunchAtLoginController
 ├─ CmodRuntime
 ├─ BuildInfo
 ├─ PermissionService

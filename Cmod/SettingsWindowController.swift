@@ -9,6 +9,7 @@ final class SettingsWindowController {
         let rootView = SettingsView(
             state: runtime.state,
             appUpdater: runtime.appUpdater,
+            launchAtLoginController: runtime.launchAtLoginController,
             refreshPermissions: { [weak runtime] in
                 runtime?.refreshPermissionStatus(prompt: true)
             },
@@ -21,7 +22,7 @@ final class SettingsWindowController {
         }
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 320),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 380),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false,

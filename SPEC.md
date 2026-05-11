@@ -33,6 +33,7 @@ The app is inspired by eikana, but intentionally keeps the first product slice s
 | Settings Window | Standard `NSWindow` with `NSHostingController` |
 | Global Key Monitoring | CoreGraphics listen-only `CGEventTap` |
 | Permission Status | ApplicationServices Accessibility API |
+| Launch at Login | ServiceManagement `SMAppService.mainApp` |
 | Input Switching | Carbon Text Input Source Services (`TISSelectInputSource`) |
 | Fallback JIS Key Codes | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
 | Updates | Sparkle 2 via `SPUStandardUpdaterController` |
@@ -60,6 +61,7 @@ Cmod/
 ├── CmodRuntime.swift              # Runtime wiring for state, permissions, event tap, updater
 ├── CmodState.swift                # Published runtime state
 ├── PermissionService.swift        # Accessibility trust status
+├── LaunchAtLoginController.swift  # Main-app login item registration
 ├── GlobalCommandKeyEventTap.swift # Listen-only global event tap
 ├── CommandKeyDetector.swift       # Pure command tap state machine
 ├── InputSwitcher.swift            # Text input source selection
@@ -155,6 +157,7 @@ Synthetic events are posted to `.cghidEventTap` with empty flags so the switch a
 | `TISInputSwitcher` | Input mode switching |
 | `SettingsWindowController` | Settings window presentation |
 | `AppUpdaterController` | Sparkle startup and manual update checks |
+| `LaunchAtLoginController` | Main-app login item status and registration |
 
 Startup flow:
 
@@ -209,7 +212,7 @@ The settings window is a standard macOS `NSWindow`.
 
 | Item | Value |
 |------|-------|
-| Size | 500 x 320 pt |
+| Size | 500 x 380 pt |
 | Style | `.titled`, `.closable`, `.miniaturizable` |
 | Title | `Cmod Settings` |
 
@@ -217,6 +220,8 @@ The settings window is a standard macOS `NSWindow`.
 
 | Control | Behavior |
 |---------|----------|
+| "Launch at Login" | Registers or unregisters the main app with `SMAppService.mainApp` |
+| "Open Login Items Settings" | Opens System Settings when the login item needs user approval |
 | "Automatically check for updates" | Toggles `SPUUpdater.automaticallyChecksForUpdates` |
 | "Automatically download updates" | Toggles `SPUUpdater.automaticallyDownloadsUpdates`; disabled when automatic checks are off |
 | "Check for Updates..." | Starts Sparkle manual update check |
@@ -226,6 +231,7 @@ The settings window is a standard macOS `NSWindow`.
 | Field | Value |
 |-------|-------|
 | Version | `BuildInfo.displayVersion` |
+| Launch at Login | `Off`, `Enabled`, `Needs Approval`, or `Unavailable` |
 | Monitoring | `Active` or `Inactive` |
 | Accessibility | `Granted`, `Missing`, or `Unknown` |
 | Last Switch | `English`, `Kana`, or `None` |
@@ -272,7 +278,7 @@ struct CmodApp: App
 | `applicationDidFinishLaunching` | Creates `MenuBarController` and starts `CmodRuntime` |
 | `applicationWillTerminate` | Stops runtime monitoring |
 
-There is no Dock icon and no login item in the current scope.
+There is no Dock icon. Launch at Login is controlled from the Settings window.
 
 ---
 
@@ -309,6 +315,7 @@ Framework: Swift Testing (`@Test`, `#expect`)
 | Shortcut safety | Command shortcuts do not switch input |
 | Mouse safety | Command + mouse click does not switch input |
 | Overlap safety | Overlapping Command keys do not switch input |
+| Launch at Login | ServiceManagement registration and unregistration are routed correctly |
 | Release versioning | Semantic version tags produce monotonic numeric build versions |
 | Build metadata | Build info contains version and git hash |
 | UI launch | App launches as a menu bar app |
@@ -410,7 +417,6 @@ Manual `workflow_dispatch` runs validate signing, notarization, and export witho
 
 - Input mappings are fixed: left Command -> English, right Command -> Kana.
 - Input source switching prefers Google Japanese Input and Apple Japanese/ABC sources.
-- No login item support is implemented yet.
 - No per-key customization UI is implemented yet.
 - Permission recovery still requires the user to approve macOS settings and restart or refresh status manually.
 - The event tap is listen-only, so Cmod cannot prevent the original Command key event from reaching other apps.

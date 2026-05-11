@@ -118,6 +118,49 @@ struct CmodTests {
         )
     }
 
+    @Test @MainActor func enablingLaunchAtLoginRegistersMainAppLoginItem() throws {
+        let service = FakeLoginItemService(status: .notRegistered)
+        let controller = LaunchAtLoginController(service: service)
+
+        let status = try controller.setEnabled(true)
+
+        #expect(status == .enabled)
+        #expect(service.registerCallCount == 1)
+        #expect(service.unregisterCallCount == 0)
+    }
+
+    @Test @MainActor func disablingLaunchAtLoginUnregistersMainAppLoginItem() throws {
+        let service = FakeLoginItemService(status: .enabled)
+        let controller = LaunchAtLoginController(service: service)
+
+        let status = try controller.setEnabled(false)
+
+        #expect(status == .notRegistered)
+        #expect(service.registerCallCount == 0)
+        #expect(service.unregisterCallCount == 1)
+    }
+
+    @Test @MainActor func launchAtLoginRequiresApprovalStaysRegistered() throws {
+        let service = FakeLoginItemService(status: .requiresApproval)
+        let controller = LaunchAtLoginController(service: service)
+
+        let status = try controller.setEnabled(true)
+
+        #expect(status == .requiresApproval)
+        #expect(status.isRegistered)
+        #expect(service.registerCallCount == 0)
+        #expect(service.unregisterCallCount == 0)
+    }
+
+    @Test @MainActor func launchAtLoginSettingsPanelCanBeOpened() {
+        let service = FakeLoginItemService(status: .requiresApproval)
+        let controller = LaunchAtLoginController(service: service)
+
+        controller.openSystemSettingsLoginItems()
+
+        #expect(service.openSettingsCallCount == 1)
+    }
+
     private func inputSource(
         id: String,
         name: String,
@@ -130,5 +173,31 @@ struct CmodTests {
             isSelectCapable: isSelectCapable,
             isEnabled: isEnabled,
         )
+    }
+}
+
+@MainActor
+private final class FakeLoginItemService: LoginItemServicing {
+    var status: LaunchAtLoginStatus
+    var registerCallCount = 0
+    var unregisterCallCount = 0
+    var openSettingsCallCount = 0
+
+    init(status: LaunchAtLoginStatus) {
+        self.status = status
+    }
+
+    func register() throws {
+        registerCallCount += 1
+        status = .enabled
+    }
+
+    func unregister() throws {
+        unregisterCallCount += 1
+        status = .notRegistered
+    }
+
+    func openSystemSettingsLoginItems() {
+        openSettingsCallCount += 1
     }
 }

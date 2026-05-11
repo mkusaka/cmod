@@ -33,6 +33,7 @@ eikana に着想を得ているが、最初のプロダクトスライスは意�
 | 設定ウィンドウ | 標準 `NSWindow` + `NSHostingController` |
 | グローバルキー監視 | CoreGraphics listen-only `CGEventTap` |
 | 権限状態 | ApplicationServices Accessibility API |
+| login item | ServiceManagement `SMAppService.mainApp` |
 | 入力切り替え | Carbon Text Input Source Services (`TISSelectInputSource`) |
 | fallback JIS キーコード | Carbon.HIToolbox (`kVK_JIS_Eisu`, `kVK_JIS_Kana`) |
 | 自動更新 | Sparkle 2 (`SPUStandardUpdaterController`) |
@@ -60,6 +61,7 @@ Cmod/
 ├── CmodRuntime.swift              # 状態、権限、event tap、updater の runtime wiring
 ├── CmodState.swift                # 公開 runtime state
 ├── PermissionService.swift        # Accessibility trust status
+├── LaunchAtLoginController.swift  # main app login item registration
 ├── GlobalCommandKeyEventTap.swift # listen-only global event tap
 ├── CommandKeyDetector.swift       # Command 単体タップの純粋な状態機械
 ├── InputSwitcher.swift            # Text input source selection
@@ -155,6 +157,7 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 | `TISInputSwitcher` | 入力モード切り替え |
 | `SettingsWindowController` | 設定ウィンドウ表示 |
 | `AppUpdaterController` | Sparkle の起動と手動 update check |
+| `LaunchAtLoginController` | main app login item の状態確認と登録 |
 
 起動時の流れ:
 
@@ -209,7 +212,7 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 
 | 項目 | 値 |
 |------|-----|
-| サイズ | 500 x 320 pt |
+| サイズ | 500 x 380 pt |
 | スタイル | `.titled`, `.closable`, `.miniaturizable` |
 | タイトル | `Cmod Settings` |
 
@@ -217,6 +220,8 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 
 | コントロール | 動作 |
 |-------------|------|
+| "Launch at Login" | `SMAppService.mainApp` で main app を login item として登録・解除する |
+| "Open Login Items Settings" | login item がユーザー承認待ちの場合に System Settings を開く |
 | "Automatically check for updates" | `SPUUpdater.automaticallyChecksForUpdates` を切り替える |
 | "Automatically download updates" | `SPUUpdater.automaticallyDownloadsUpdates` を切り替える。自動確認が off の場合は disabled |
 | "Check for Updates..." | Sparkle の手動 update check を開始 |
@@ -226,6 +231,7 @@ event tap はユーザー入力を消費・書き換えない。すべての cal
 | フィールド | 値 |
 |-----------|-----|
 | Version | `BuildInfo.displayVersion` |
+| Launch at Login | `Off`, `Enabled`, `Needs Approval`, `Unavailable` |
 | Monitoring | `Active` または `Inactive` |
 | Accessibility | `Granted`, `Missing`, `Unknown` |
 | Last Switch | `English`, `Kana`, `None` |
@@ -272,7 +278,7 @@ struct CmodApp: App
 | `applicationDidFinishLaunching` | `MenuBarController` を作成し、`CmodRuntime` を開始 |
 | `applicationWillTerminate` | runtime monitoring を停止 |
 
-現在のスコープでは Dock アイコンも login item も持たない。
+Dock アイコンは表示しない。Launch at Login は設定ウィンドウから制御する。
 
 ---
 
@@ -309,6 +315,7 @@ Xcode の build phase が build 時に `Cmod/BuildInfo.generated.swift` を書�
 | Shortcut safety | Command shortcut では入力を切り替えない |
 | Mouse safety | Command + mouse click では入力を切り替えない |
 | Overlap safety | 左右 Command の重なり押しでは入力を切り替えない |
+| Launch at Login | ServiceManagement の登録・解除が正しく route される |
 | Release versioning | semantic version tag から単調増加する numeric build version を作る |
 | Build metadata | build info が version と git hash を持つ |
 | UI launch | menu bar app として起動できる |
@@ -409,7 +416,6 @@ manual `workflow_dispatch` は signing、notarization、export を検証する�
 
 - 入力マッピングは固定: 左 Command -> English、右 Command -> Kana。
 - 入力ソース切り替えは Google 日本語入力と Apple 日本語/ABC source を優先する。
-- login item support はまだ実装していない。
 - key customization UI はまだ実装していない。
 - 権限回復後は、ユーザーが macOS Settings で許可したうえで restart または status refresh する必要がある。
 - event tap は listen-only のため、元の Command key event が他アプリに届くことは防げない。

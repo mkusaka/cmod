@@ -6,6 +6,7 @@ final class CmodRuntime {
 
     let state: CmodState
     let appUpdater: AppUpdaterController
+    let launchAtLoginController: LaunchAtLoginController
 
     private let permissionService: PermissionService
     private let eventTap: GlobalCommandKeyEventTap
@@ -14,6 +15,7 @@ final class CmodRuntime {
     private init() {
         state = CmodState()
         appUpdater = AppUpdaterController()
+        launchAtLoginController = LaunchAtLoginController()
         permissionService = PermissionService()
         settingsWindowController = SettingsWindowController()
         eventTap = GlobalCommandKeyEventTap(
