@@ -29,5 +29,13 @@
         <sparkle:minimumSystemVersion>15.5</sparkle:minimumSystemVersion>
         <enclosure url="https://github.com/mkusaka/cmod/releases/download/v0.0.3/Cmod.zip" sparkle:edSignature="P/0bLiADPqry2b6riSnCcYNXGVF+gelW6mKHPiboXNiCOL2ea97gTcpRKS4UrMrBn1cgYc8deaAqstsOyW2pAg==" length="1781321" type="application/octet-stream"/>
     </item>
+    <item>
+        <title>Version 0.0.4</title>
+        <pubDate>Mon, 11 May 2026 04:38:11 +0000</pubDate>
+        <sparkle:version>4</sparkle:version>
+        <sparkle:shortVersionString>0.0.4</sparkle:shortVersionString>
+        <sparkle:minimumSystemVersion>15.5</sparkle:minimumSystemVersion>
+        <enclosure url="https://github.com/mkusaka/cmod/releases/download/v0.0.4/Cmod.zip" sparkle:edSignature="S1y6QDsyqKOHt+Lqqj6BZ1GqrIjU/bDxZJtzJ3UaFtpwcGxvFKi/ZdeStIrVs70I/mfWkk1rYTZnHuwLjFCTAA==" length="1790311" type="application/octet-stream"/>
+    </item>
   </channel>
 </rss>
