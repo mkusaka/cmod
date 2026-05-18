@@ -1,6 +1,8 @@
 # Cmod
 
-Cmod is a minimal macOS menu bar app inspired by eikana.
+A minimal macOS menu bar app for switching English/Kana input with left/right Command key taps.
+
+Cmod is inspired by eikana.
 
 It watches left and right Command key taps globally:
 
