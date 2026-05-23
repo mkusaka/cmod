@@ -1,27 +1,21 @@
 name: Test
-
 on:
   workflow_call:
   push:
   pull_request:
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions: {}
-
 jobs:
   lint:
     name: Lint
     runs-on: macos-26
-    permissions:
-      contents: read
+    permissions: {}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Select Xcode with Swift 6.2
         run: |
           if [[ -d /Applications/Xcode_26.2.app ]]; then
@@ -31,35 +25,28 @@ jobs:
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
-
       - name: Print tool versions
         run: |
           xcodebuild -version
           swift --version
           swift --version | grep -q 'Swift version 6\.2'
-
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
           version: 2026.5.5
           cache: true
-
       - name: SwiftFormat check
         run: mise exec -- swiftformat --lint .
-
       - name: SwiftLint check
         run: mise exec -- swiftlint lint --quiet
-
       - name: GitHub Actions lint
         run: mise exec -- actionlint
-
       - name: GitHub Actions security lint
         run: mise exec -- zizmor --offline .
-
       - name: GitHub Actions pin check
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: mise exec -- pinact run --check
-
+    timeout-minutes: 60
   unit-test:
     name: Unit Tests (${{ matrix.macos-version }})
     runs-on: ${{ matrix.macos-version }}
@@ -69,13 +56,11 @@ jobs:
         macos-version:
           - macos-15
           - macos-26
-    permissions:
-      contents: read
+    permissions: {}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Select Xcode with Swift 6.2
         run: |
           if [[ -d /Applications/Xcode_26.2.app ]]; then
@@ -85,13 +70,11 @@ jobs:
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
-
       - name: Print tool versions
         run: |
           xcodebuild -version
           swift --version
           swift --version | grep -q 'Swift version 6\.2'
-
       - name: Run unit tests
         run: |
           xcodebuild -project Cmod.xcodeproj \
@@ -101,7 +84,7 @@ jobs:
             test \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
-
+    timeout-minutes: 60
   ui-test:
     name: UI Tests (${{ matrix.macos-version }})
     runs-on: ${{ matrix.macos-version }}
@@ -112,13 +95,11 @@ jobs:
         macos-version:
           - macos-15
           - macos-26
-    permissions:
-      contents: read
+    permissions: {}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Select Xcode with Swift 6.2
         run: |
           if [[ -d /Applications/Xcode_26.2.app ]]; then
@@ -128,13 +109,11 @@ jobs:
             find /Applications -maxdepth 1 -name 'Xcode*.app' -print
             exit 1
           fi
-
       - name: Print tool versions
         run: |
           xcodebuild -version
           swift --version
           swift --version | grep -q 'Swift version 6\.2'
-
       - name: Run UI tests
         run: |
           xcodebuild -project Cmod.xcodeproj \
