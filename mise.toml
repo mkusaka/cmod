@@ -2,6 +2,6 @@
 actionlint = "1.7.12"
 lefthook = "2.1.9"
 pinact = "4.1.0"
-swiftformat = "0.62.0"
+swiftformat = "0.62.1"
 swiftlint = "0.65.0"
 zizmor = "1.26.1"
